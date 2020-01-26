@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Benjamin Pelletier</Authors>
+    <Description>.NET package to convert between JSON and plain .NET business objects with minimal effort and overhead using a structured JsonObject intermediate format</Description>
+    <PackageLicenseUrl>https://github.com/BenjaminPelletier/JsonSerialization/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/BenjaminPelletier/JsonSerialization</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/BenjaminPelletier/JsonSerialization</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>JSON, serialization</PackageTags>
   </PropertyGroup>
 
 </Project>
