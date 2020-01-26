@@ -59,6 +59,7 @@ namespace Json.Serialization.Tests
             public FileInfo FileInfo;
             public double[,] DoubleArray2D;
             public double DoubleProperty { get; private set; }
+            public Uri Uri;
 
             [JsonIgnore]
             public double IgnoredDouble;
@@ -83,6 +84,7 @@ namespace Json.Serialization.Tests
                 FileInfo = new FileInfo(@"C:\Windows\notepad.exe");
                 DoubleArray2D = new double[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
                 DoubleProperty = 555.222;
+                Uri = new Uri("https://example.com");
             }
 
             public ComplexClass(
@@ -103,7 +105,8 @@ namespace Json.Serialization.Tests
                 DirectoryInfo directoryInfo,
                 FileInfo fileInfo,
                 double[,] doubleArray2D,
-                double doubleProperty)
+                double doubleProperty,
+                Uri uri)
             {
                 NullableBool = nullableBool;
                 Enum = anEnum;
@@ -122,6 +125,7 @@ namespace Json.Serialization.Tests
                 FileInfo = fileInfo;
                 DoubleArray2D = doubleArray2D;
                 DoubleProperty = doubleProperty;
+                Uri = uri;
             }
 
             public static ComplexClass MakeExample1()
@@ -148,7 +152,8 @@ namespace Json.Serialization.Tests
                     new DirectoryInfo(@"C:\Users"),
                     new FileInfo(@"C:\Windows\explorer.exe"),
                     new double[3, 3] { { 9, 6, 3 }, { 8, 5, 62}, { 7, 4, 1 } },
-                    333.444);
+                    333.444,
+                    new Uri("ftp://example.com:1234/subpath"));
             }
 
             public static string NotEqualBecause(ComplexClass obj1, ComplexClass obj2)
@@ -256,6 +261,9 @@ namespace Json.Serialization.Tests
                 }
 
                 if (obj1.DoubleProperty != obj2.DoubleProperty) return "DoubleProperty value mismatch";
+
+                if ((obj1.Uri == null) != (obj2.Uri == null)) return "Uri null status mismatch";
+                if (obj1.Uri.AbsoluteUri != obj2.Uri.AbsoluteUri) return "Uri value mismatch";
 
                 return null;
             }

@@ -269,6 +269,32 @@ namespace Json.Serialization
 
         #endregion
 
+        #region Uri
+
+        [SerializedType(typeof(Uri))]
+        static JsonObject MakeJson_Uri(Object obj)
+        {
+            if (obj == null)
+                return JsonObject.Null;
+            else
+                return new JsonObject(((Uri)obj).AbsoluteUri);
+        }
+
+        [SerializedType(typeof(Uri))]
+        static object MakeObject_Uri(JsonObject json)
+        {
+            if (json.ObjectType == JsonObject.Type.Null)
+                return null;
+            else if (json.ObjectType == JsonObject.Type.String)
+            {
+                return new Uri(json.String);
+            }
+            else
+                throw new FormatException("Invalid JSON: Expected Uri string; instead found JSON " + json.ObjectType);
+        }
+
+        #endregion
+
         #endregion
     }
 }
