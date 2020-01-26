@@ -75,6 +75,27 @@ namespace Json.Serialization
 
         #endregion
 
+        #region Singleton instance
+
+        private static object _SingletonBaton = new object();
+        private static JsonTranslator _Singleton;
+        public static JsonTranslator Singleton
+        {
+            get
+            {
+                lock (_SingletonBaton)
+                {
+                    if (_Singleton == null)
+                    {
+                        _Singleton = new JsonTranslator();
+                    }
+                }
+                return _Singleton;
+            }
+        }
+
+        #endregion
+
         private string AdjustedFieldName(string rawName)
         {
             if (rawName.EndsWith("k__BackingField"))

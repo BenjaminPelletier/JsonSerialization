@@ -27,5 +27,14 @@ namespace Json.Serialization.Tests
             string notEqualBecause = Classes.ComplexClass.NotEqualBecause(cc1, cc2);
             Assert.IsNull(notEqualBecause, notEqualBecause);
         }
+
+        [TestMethod()]
+        public void SingletonTest()
+        {
+            var bc1 = new Classes.BasicClass("foo", 123, 456.789);
+            string json = JsonTranslator.Singleton.MakeJson<Classes.BasicClass>(bc1).ToString();
+            Classes.BasicClass bc2 = JsonTranslator.Singleton.MakeObject<Classes.BasicClass>(JsonObject.Parse(json));
+            Assert.IsTrue(Classes.BasicClass.AreEqual(bc1, bc2));
+        }
     }
 }
