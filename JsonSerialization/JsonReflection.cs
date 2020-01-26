@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace Json.Serialization
 {
-    public static class JsonReflection
+    static class JsonReflection
     {
         /// <summary>
         /// For a type that inherits generic IEnumerable, get the type of each item in that IEnumerable

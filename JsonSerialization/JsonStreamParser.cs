@@ -10,7 +10,7 @@ namespace Json.Serialization
     /// <summary>
     /// Tool to parse a stream of text into one or more JsonObjects.
     /// </summary>
-    class JsonStreamParser
+    public class JsonStreamParser
     {
         private Stream _stream;
         private byte[] _Buffer;
