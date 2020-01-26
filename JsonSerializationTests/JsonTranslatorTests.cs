@@ -10,7 +10,7 @@ namespace Json.Serialization.Tests
         {
             var bc1 = new Classes.BasicClass("foo", 123, 456.789);
             var translator = new JsonTranslator();
-            string json = translator.MakeJson<Classes.BasicClass>(bc1).ToString();
+            string json = translator.MakeJson(bc1).ToString();
             Classes.BasicClass bc2 = translator.MakeObject<Classes.BasicClass>(JsonObject.Parse(json));
             Assert.IsTrue(Classes.BasicClass.AreEqual(bc1, bc2));
         }
@@ -29,10 +29,11 @@ namespace Json.Serialization.Tests
         }
 
         [TestMethod()]
-        public void SingletonTest()
+        public void MakeObjectTest_Unicode()
         {
-            var bc1 = new Classes.BasicClass("foo", 123, 456.789);
-            string json = JsonTranslator.Singleton.MakeJson<Classes.BasicClass>(bc1).ToString();
+            var bc1 = new Classes.BasicClass("Bulletproof [feat. XYLØ]", 222, 99.99);
+            string json = JsonTranslator.Singleton.MakeJson(bc1).ToString();
+            Assert.IsTrue(json.IndexOf(@"\u00d8") > 0);
             Classes.BasicClass bc2 = JsonTranslator.Singleton.MakeObject<Classes.BasicClass>(JsonObject.Parse(json));
             Assert.IsTrue(Classes.BasicClass.AreEqual(bc1, bc2));
         }

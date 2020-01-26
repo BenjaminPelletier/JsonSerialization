@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/BenjaminPelletier/JsonSerialization</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>JSON, serialization</PackageTags>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <AssemblyVersion>1.0.3.0</AssemblyVersion>
   </PropertyGroup>
 

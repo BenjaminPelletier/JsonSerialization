@@ -213,15 +213,27 @@ namespace Json.Serialization
                 char c = await ReadNextChar();
                 if (escape)
                 {
-                    int i = ESCAPES.IndexOf(c);
-                    if (i >= 0)
+                    if (c == 'u')
                     {
-                        sb.Append(REPLACEMENTS[i]);
+                        sb.Append((char)int.Parse(await ReadCharacters(4), System.Globalization.NumberStyles.HexNumber));
                         escape = false;
+                    }
+                    else if (c == 'U')
+                    {
+                        throw new NotImplementedException("Basic .NET chars do not support 32-bit Unicode characters");
                     }
                     else
                     {
-                        throw new FormatException("Invalid escape character '" + c + "'");
+                        int i = ESCAPES.IndexOf(c);
+                        if (i >= 0)
+                        {
+                            sb.Append(REPLACEMENTS[i]);
+                            escape = false;
+                        }
+                        else
+                        {
+                            throw new FormatException("Invalid escape character '" + c + "'");
+                        }
                     }
                 }
                 else if (c == '\\')
@@ -237,6 +249,16 @@ namespace Json.Serialization
                     sb.Append(c);
                 }
             }
+        }
+
+        private async Task<string> ReadCharacters(int nCharacters)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < nCharacters; i++)
+            {
+                sb.Append(await ReadNextChar());
+            }
+            return sb.ToString();
         }
 
         private async Task ReadSequence(string sequence)

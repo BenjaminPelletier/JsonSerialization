@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Json.Serialization
 {
@@ -161,10 +162,45 @@ namespace Json.Serialization
 
         #region String conversion
 
+        private static string ConvertToJsonAscii(string unicode)
+        {
+            unicode = "\"" + unicode.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+            string ascii;
+            if (unicode.Where(c => c > 128).Any())
+            {
+                const int SIXTEEN_BITS = 65536;
+                var sb = new StringBuilder();
+                foreach (char c in unicode)
+                {
+                    if (c <= 128)
+                    {
+                        sb.Append(c);
+                    }
+                    else if (c < SIXTEEN_BITS)
+                    {
+                        sb.Append(@"\u");
+                        sb.Append(((int)c).ToString("x4"));
+                    }
+                    else
+                    {
+                        sb.Append(@"\U");
+                        sb.Append(((int)c).ToString("x8"));
+                    }
+                }
+                ascii = sb.ToString();
+            }
+            else
+            {
+                ascii = unicode;
+            }
+
+            return ascii;
+        }
+
         public override string ToString()
         {
             if (ObjectType == Type.String)
-                return "\"" + (Value as string).Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+                return ConvertToJsonAscii(Value as string);
             else if (ObjectType == Type.Number)
                 return Value.ToString();
             else if (ObjectType == Type.Dictionary)
@@ -194,7 +230,7 @@ namespace Json.Serialization
         public string ToMultilineString(int indentIncrement = 2, int currentIndent = 0)
         {
             if (ObjectType == Type.String)
-                return "\"" + (Value as string).Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+                return ConvertToJsonAscii(Value as string);
             else if (ObjectType == Type.Number)
                 return Value.ToString();
             else if (ObjectType == Type.Dictionary)
