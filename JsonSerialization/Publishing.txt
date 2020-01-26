@@ -1,0 +1,1 @@
+﻿https://docs.microsoft.com/en-us/nuget/quickstart/create-and-publish-a-package-using-visual-studio?tabs=netcore-cli#publish-with-the-dotnet-cli-or-nugetexe-cli
