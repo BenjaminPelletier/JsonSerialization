@@ -19,8 +19,10 @@ namespace Json.Serialization.Tests
         public void MakeObjectTest_Complex()
         {
             Classes.ComplexClass cc1 = Classes.ComplexClass.MakeExample1();
+            cc1.IgnoredDouble = 123;
             var translator = new JsonTranslator();
             string json = translator.MakeJson<Classes.ComplexClass>(cc1).ToMultilineString();
+            cc1.IgnoredDouble = 321;
             Classes.ComplexClass cc2 = translator.MakeObject<Classes.ComplexClass>(JsonObject.Parse(json));
             string notEqualBecause = Classes.ComplexClass.NotEqualBecause(cc1, cc2);
             Assert.IsNull(notEqualBecause, notEqualBecause);
