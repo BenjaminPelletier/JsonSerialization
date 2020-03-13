@@ -1,1 +1,5 @@
-﻿https://docs.microsoft.com/en-us/nuget/quickstart/create-and-publish-a-package-using-visual-studio?tabs=netcore-cli#publish-with-the-dotnet-cli-or-nugetexe-cli
+﻿* Update version number in project "Package version" and "Assembly version"
+* Ensure "Generate NuGet package on build" is checked under Package in project properties
+* Build, and verify JsonSerialization.x.x.x.nupkg exists in JsonSerialization/bin/Release
+* `dotnet nuget push JsonSerialization.x.x.x.nupkg -k <key> -s https://api.nuget.org/v3/index.json` (see link below)
+  * https://docs.microsoft.com/en-us/nuget/quickstart/create-and-publish-a-package-using-visual-studio?tabs=netcore-cli#publish-with-the-dotnet-cli-or-nugetexe-cli

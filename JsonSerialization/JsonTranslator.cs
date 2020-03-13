@@ -33,6 +33,46 @@ namespace Json.Serialization
             _TranslatorExtensions = customTranslators;
         }
 
+        #region Dynamic conversion customization
+
+        public class ObjectMakerCreationEventArgs : EventArgs
+        {
+            public readonly Type ObjectType;
+            public ObjectMaker Maker;
+
+            public ObjectMakerCreationEventArgs(Type objectType, ObjectMaker maker)
+            {
+                ObjectType = objectType;
+                Maker = maker;
+            }
+        }
+
+        /// <summary>
+        /// Triggered when a coverter from JSON to .NET business object is created.
+        /// The ObjectMaker is included in the EventArgs and may be modified by the event handler.
+        /// </summary>
+        public event EventHandler<ObjectMakerCreationEventArgs> ObjectMakerCreated;
+
+        public class JsonMakerCreationEventArgs : EventArgs
+        {
+            public readonly Type ObjectType;
+            public JsonMaker Maker;
+
+            public JsonMakerCreationEventArgs(Type objectType, JsonMaker maker)
+            {
+                ObjectType = objectType;
+                Maker = maker;
+            }
+        }
+
+        /// <summary>
+        /// Triggered when a coverter from .NET business object to JSON is created.
+        /// The JsonMaker is included in the EventArgs and may be modified by the event handler.
+        /// </summary>
+        public event EventHandler<JsonMakerCreationEventArgs> JsonMakerCreated;
+
+        #endregion
+
         #region Public accessors
 
         /// <summary>
@@ -119,7 +159,9 @@ namespace Json.Serialization
         {
             if (!_ObjectMakers.ContainsKey(objectType))
             {
-                _ObjectMakers[objectType] = MakeObjectMaker(objectType);
+                var e = new ObjectMakerCreationEventArgs(objectType, MakeObjectMaker(objectType));
+                ObjectMakerCreated?.Invoke(this, e);
+                _ObjectMakers[objectType] = e.Maker;
             }
             return _ObjectMakers[objectType];
         }
@@ -327,7 +369,9 @@ namespace Json.Serialization
         {
             if (!_JsonMakers.ContainsKey(objectType))
             {
-                _JsonMakers[objectType] = MakeJsonMaker(objectType);
+                var e = new JsonMakerCreationEventArgs(objectType, MakeJsonMaker(objectType));
+                JsonMakerCreated?.Invoke(this, e);
+                _JsonMakers[objectType] = e.Maker;
             }
             return _JsonMakers[objectType];
         }
